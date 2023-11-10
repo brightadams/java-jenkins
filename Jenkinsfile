@@ -1,3 +1,4 @@
+@Library("jenkins-shared-library")_
 def gv
 pipeline {
     agent any
@@ -10,8 +11,7 @@ pipeline {
         stage("build jar"){
             steps {
                 script {
-                    echo "building application"
-                    sh "mvn package"
+                    buildJar()
                 }
             }
         }
@@ -19,12 +19,7 @@ pipeline {
         stage("build image"){
             steps {
                 script {
-                    echo "building docker image"
-                    withCredentials([usernamePassword(credentialsId:"docker", passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh 'docker build -t brightadams/demo-app:jma-2.0 .'
-                        sh 'echo $PASS | docker login -u $USER --password-stdin'
-                        sh 'docker push brightadams/demo-app:jma-2.0'
-                    }
+                    buildImage()
                 }
             }
         }
