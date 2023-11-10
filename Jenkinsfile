@@ -20,6 +20,8 @@ pipeline {
             steps {
                 script {
                     buildImage "brightadams/demo-app:jma-3.0"
+                    dockerLogin()
+                    dockerPush "brightadams/demo-app:jma-3.0"
                 }
             }
         }
