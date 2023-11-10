@@ -11,7 +11,7 @@ pipeline {
         stage("build jar"){
             steps {
                 script {
-                    buildJar()
+                    buildJar "brightadams/demo-app:jma-3.0"
                 }
             }
         }
