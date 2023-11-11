@@ -17,7 +17,7 @@ pipeline {
                     //get the children text of the tag
                     def version = matcher[0][1]
                     //append the build number(number of builds in jenkins) to the version which we store in an env variable so we can use it as docker image tags..
-                    env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                    env.IMAGE_VERSION = "$version-$BUILD_NUMBER"
                 }
             }
         }
