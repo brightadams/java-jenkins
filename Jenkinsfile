@@ -52,5 +52,28 @@ pipeline {
                 }
             }
         }
+
+        stage("commit version update"){
+            //after deploying, github will still have the previous version, so we must commit it here...
+            steps {
+                script {
+                    echo "commiting deployed version update to git...."
+                    withCredentials([usernamePassword(credentialsId:"gitCred", passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh 'git config --global user.email "brightadams58@gmail.com"'
+                        sh 'git config --global user.name "Bright"'
+                        //above sets the details for our git
+                        sh "git status"
+                        sh "git branch"
+                        sh "git config --list"
+                        //above prints our git details for debugging.. we could have alternative ssh to jenkins server to set these
+                        
+                        sh "git remote set-url origin https://${USER}:${PASSWORD}@github.com/brightadams/java-jenkins.git"
+                        sh "git add ."
+                        sh 'git commit -m "ci: version increment"'
+                        sh 'git push origin HEAD:main'
+                    }
+                }
+            }
+        }
     }
 }
