@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
                     echo "commiting deployed version update to git...."
-                    withCredentials([usernamePassword(credentialsId:"gitCred", passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                    withCredentials([string(credentialsId:"githubToken", variable: 'TOKEN')]){
                         sh 'git config --global user.email "brightadams58@gmail.com"'
                         sh 'git config --global user.name "Bright"'
                         //above sets the details for our git
@@ -67,7 +67,7 @@ pipeline {
                         sh "git config --list"
                         //above prints our git details for debugging.. we could have alternative ssh to jenkins server to set these
                         
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/brightadams/java-jenkins.git"
+                        sh "git remote set-url origin https://${TOKEN}@github.com/brightadams/java-jenkins.git"
                         sh "git add ."
                         sh 'git commit -m "ci: version increment"'
                         sh 'git push origin HEAD:main'
