@@ -67,7 +67,7 @@ pipeline {
                         sh "git config --list"
                         //above prints our git details for debugging.. we could have alternative ssh to jenkins server to set these
                         
-                        sh "git remote set-url origin https://${USER}:${PASSWORD}@github.com/brightadams/java-jenkins.git"
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/brightadams/java-jenkins.git"
                         sh "git add ."
                         sh 'git commit -m "ci: version increment"'
                         sh 'git push origin HEAD:main'
