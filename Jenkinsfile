@@ -1,7 +1,7 @@
-library identifier: 'custom-lib@master', retriever: modernSCM(
+library identifier: 'custom-lib@main', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/brightadams/jenkins-shared-library.git',
-   credentialsId: 'my-private-key'])_
+   credentialsId: 'gitlabCred'])_
 def gv
 pipeline {
     agent any
