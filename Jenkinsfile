@@ -19,4 +19,19 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            echo "always renders"
+        }
+
+        success {
+            echo "renders on success"
+        }
+
+        failure {
+            echo "renders on failure"
+        }
+        //
+    }
 }
