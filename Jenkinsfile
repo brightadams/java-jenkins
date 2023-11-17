@@ -1,6 +1,6 @@
 library identifier: 'custom-lib@master', retriever: modernSCM(
   [$class: 'GitSCMSource',
-   remote: 'git@git.mycorp.com:my-jenkins-utils.git',
+   remote: 'https://github.com/brightadams/jenkins-shared-library.git',
    credentialsId: 'my-private-key'])_
 def gv
 pipeline {
