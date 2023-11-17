@@ -1,37 +1,40 @@
+def gv
 pipeline {
     agent any
+
+    tools {
+        maven "maven"
+    }
     stages {
-        stage("Test"){
+
+        stage("build jar"){
             steps {
-                echo "Testing app"
+                script {
+                    echo "building application"
+                    sh "mvn package"
+                }
             }
         }
 
-        stage("Build"){
+        stage("build image"){
             steps {
-                echo "Building app"
+                script {
+                    echo "building docker image"
+                    withCredentials([usernamePassword(credentialsId:"docker", passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh 'docker build -t brightadams/demo-app:jma-2.0 .'
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        sh 'docker push brightadams/demo-app:jma-2.0'
+                    }
+                }
             }
         }
 
         stage("Deploy"){
             steps {
-                echo "Deploying app"
+                script {
+                    echo "Deploying app"
+                }
             }
         }
-    }
-
-    post {
-        always {
-            echo "always renders"
-        }
-
-        success {
-            echo "renders on success"
-        }
-
-        failure {
-            echo "renders on failure"
-        }
-        //
     }
 }
