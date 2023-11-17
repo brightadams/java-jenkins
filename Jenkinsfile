@@ -1,39 +1,32 @@
-def gv
 pipeline {
     agent any
-
-    tools {
-        maven "maven"
+    parameters {
+        choice(name:"VERSION", choices: ["1.0.0","1.0.1", "1.0.2"], description: "")
+        booleanParam(name:"executeTests", defaultValue: true, description:"")
     }
+
     stages {
-
-        stage("build jar"){
+        stage("build"){
             steps {
-                script {
-                    echo "building application"
-                    sh "mvn package"
-                }
+                echo "Building the application"
             }
         }
 
-        stage("build image"){
-            steps {
-                script {
-                    echo "building docker image"
-                    withCredentials([usernamePassword(credentialsId:"dockerCred", passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh 'docker build -t brightadams/demo-app:jma-2.0 .'
-                        sh 'echo $PASS | docker login -u $USER --password-stdin'
-                        sh 'docker push brightadams/demo-app:jma-2.0'
-                    }
+        stage("test"){
+            when {
+                expression {
+                    params.executeTests
                 }
+            }
+            steps {
+                echo "Testing the application"
             }
         }
 
-        stage("Deploy"){
+        stage("deploy"){
             steps {
-                script {
-                    echo "Deploying app"
-                }
+                echo "Deploying the application"
+                echo "Deploying version ${params.VERSION}"
             }
         }
     }
