@@ -1,32 +1,36 @@
+@Library("jenkins-shared-library@main")_
+def gv
 pipeline {
     agent any
-    parameters {
-        choice(name:"VERSION", choices: ["1.0.0","1.0.1", "1.0.2"], description: "")
-        booleanParam(name:"executeTests", defaultValue: true, description:"")
+
+    tools {
+        maven "maven"
     }
-
     stages {
-        stage("build"){
-            steps {
-                echo "Building the application"
-            }
-        }
 
-        stage("test"){
-            when {
-                expression {
-                    params.executeTests
+        stage("build jar"){
+            steps {
+                script {
+                    buildJar()
                 }
             }
+        }
+
+        stage("build image"){
             steps {
-                echo "Testing the application"
+                script {
+                    buildImage "brightadams/demo-app:jma-3.0"
+                    dockerLogin()
+                    dockerPush "brightadams/demo-app:jma-3.0"
+                }
             }
         }
 
-        stage("deploy"){
+        stage("Deploy"){
             steps {
-                echo "Deploying the application"
-                echo "Deploying version ${params.VERSION}"
+                script {
+                    echo "Deploying app"
+                }
             }
         }
     }
