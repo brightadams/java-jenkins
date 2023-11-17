@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     echo "building docker image"
-                    withCredentials([usernamePassword(credentialsId:"docker", passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                    withCredentials([usernamePassword(credentialsId:"dockerCred", passwordVariable: 'PASS', usernameVariable: 'USER')]){
                         sh 'docker build -t brightadams/demo-app:jma-2.0 .'
                         sh 'echo $PASS | docker login -u $USER --password-stdin'
                         sh 'docker push brightadams/demo-app:jma-2.0'
