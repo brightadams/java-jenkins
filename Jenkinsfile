@@ -1,4 +1,4 @@
-library identifier: ‘jenkins-shared-library’, retriever: modernSCM(
+library identifier: ‘jenkins-shared-library@main’, retriever: modernSCM(
 	[$class: ‘GitSCMSource’,  remote:'https://github.com/brightadams/jenkins-shared-library.git', credentialsId: “gitlabCred”]
 )_
 def gv
