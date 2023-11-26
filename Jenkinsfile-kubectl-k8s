@@ -21,8 +21,9 @@ pipeline {
             }
             steps {
                 echo "Deploying app"
-                //
-                sh "kubectl create deployment nginx-depl --image=nginx"
+                withKubeConfig([credentialsId:"lke-creds", serverUrl: "urlOfLinodeCluster"]){
+                    sh "kubectl create deployment nginx-depl --image=nginx"
+                }
             }
         }
     }
